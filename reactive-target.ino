@@ -5,15 +5,19 @@
 //P4
 //P5 - Piezo sensor
 
-int pinG=0; 
-int pinR=1; 
+int pinGr = 0; 
+int pinRe = 1; 
 
+int waitmin = 2000;
+int waitmax = 4000;
+int targettimemin = 500;
+int targettimemax = 1500;
 int treshold = 300; //Piezo dedetion treshold
 
 void setup()
 {
-  pinMode(pinG, OUTPUT);
-  pinMode(pinR, OUTPUT);
+  pinMode(pinGr, OUTPUT);
+  pinMode(pinRe, OUTPUT);
   pinMode(3, INPUT_PULLUP);
   //Enable debug serial
   Serial.begin(9600);
@@ -43,14 +47,14 @@ int dynamika()
         czas = czas - 10;
       }
     } else {
-      czas=random(500,1500);
-      delay(random(2000,4000));
+      czas=random(targettimemin,targettimemax);
+      delay(random(waitmin,waitmax));
       enabled=1;
-      digitalWrite(pinG, HIGH);
+      digitalWrite(pinGr, HIGH);
     }
 
     if(czas<0){
-      digitalWrite(pinG, LOW);
+      digitalWrite(pinGr, LOW);
       blinkr();
       enabled=0;
     }
@@ -60,8 +64,8 @@ int dynamika()
 //Hit detection mode
 int statyka()
 { 
-  digitalWrite(pinG, LOW);
-  digitalWrite(pinR, LOW);
+  digitalWrite(pinGr, LOW);
+  digitalWrite(pinRe, LOW);
   while(true){ 
     if(piezo()==1) blinkgr();
     delay(10);    
@@ -83,9 +87,9 @@ int piezo()
 int blinkg()
 {
   for(int i=0;i<5;i++){
-    digitalWrite(pinG, HIGH);
+    digitalWrite(pinGr, HIGH);
     delay(200); 
-    digitalWrite(pinG, LOW);
+    digitalWrite(pinGr, LOW);
     delay(200); 
   }
 }  
@@ -94,24 +98,24 @@ int blinkg()
 int blinkr()
 {
   for(int i=0;i<5;i++){
-    digitalWrite(pinR, HIGH);
+    digitalWrite(pinRe, HIGH);
     delay(200); 
-    digitalWrite(pinR, LOW);
+    digitalWrite(pinRe, LOW);
     delay(200); 
   }
- }
+}
 
 //blink both leds
 int blinkgr()
 {
   for(int i=0;i<5;i++){
-    digitalWrite(pinG, HIGH);
-    digitalWrite(pinR, LOW);
+    digitalWrite(pinGr, HIGH);
+    digitalWrite(pinRe, LOW);
     delay(200); 
-    digitalWrite(pinG, LOW);
-    digitalWrite(pinR, HIGH);  
+    digitalWrite(pinGr, LOW);
+    digitalWrite(pinRe, HIGH);  
     delay(200); 
   }
-  digitalWrite(pinG, LOW);
-  digitalWrite(pinR, LOW);
+  digitalWrite(pinGr, LOW);
+  digitalWrite(pinRe, LOW);
 }
